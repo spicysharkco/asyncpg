@@ -1286,7 +1286,7 @@ port=5433
 host=somehost
 database=test_dbname
 user=admin
-password=test_password
+password=test%password
 target_session_attrs=primary
 krbsrvname=fakekrbsrvname
 gsslib=sspi
@@ -1322,7 +1322,7 @@ gsslib=sspi
                     [('somehost', 5433)],
                     {
                         'user': 'admin',
-                        'password': 'test_password',
+                        'password': 'test%password',
                         'database': 'test_dbname',
                         'target_session_attrs': 'primary',
                         'krbsrvname': 'fakekrbsrvname',
