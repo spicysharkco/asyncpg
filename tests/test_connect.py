@@ -756,8 +756,9 @@ class TestConnectParams(tb.TestCase):
             'dsn': 'postgresql://user@host/db?target_session_attrs=bogus',
             'error': (
                 exceptions.ClientConfigurationError,
-                r"target_session_attrs is expected to be one of \['any', "
-                r".*'read-only'\], got 'bogus'"
+                r"target_session_attrs is expected to be one of "
+                r"\['any', 'primary', 'standby', 'prefer-standby', "
+                r"'read-write', 'read-only'\], got 'bogus'"
             ),
         },
 
