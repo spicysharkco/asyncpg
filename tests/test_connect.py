@@ -1290,6 +1290,12 @@ password=test%password
 target_session_attrs=primary
 krbsrvname=fakekrbsrvname
 gsslib=sspi
+
+[test_service_literal]
+host=some%host
+dbname=test%%dbname
+user=ad%min
+password=p%%ss%(w)s$rd${x}
         '''))
         connection_service_file.close()
         os.chmod(connection_service_file.name, stat.S_IWUSR | stat.S_IRUSR)
@@ -1327,6 +1333,23 @@ gsslib=sspi
                         'target_session_attrs': 'primary',
                         'krbsrvname': 'fakekrbsrvname',
                         'gsslib': 'sspi',
+                    }
+                )
+            })
+            # Test that values are used literally: no "%" or "$"
+            # interpolation, and "%%" is not collapsed
+            self.run_testcase({
+                'dsn': 'postgresql://?service=test_service_literal',
+                'env': {
+                    'PGSERVICEFILE': connection_service_file.name
+                },
+                'result': (
+                    [('some%host', 5432)],
+                    {
+                        'user': 'ad%min',
+                        'password': 'p%%ss%(w)s$rd${x}',
+                        'database': 'test%%dbname',
+                        'target_session_attrs': 'any',
                     }
                 )
             })
